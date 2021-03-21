@@ -1,3 +1,7 @@
+# Before running the app to commit a next command in terminal to download nessesary dependencies
+
+`npm install`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
