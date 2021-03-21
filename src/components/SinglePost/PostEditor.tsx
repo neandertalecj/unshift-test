@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button, BtnInput, Textarea, Input } from '../common/StyledElements/StyledElements'
 
 type Props = {
   onSubmitForm: (e: React.FormEvent) => void
@@ -16,21 +17,21 @@ const PostEditor: React.FC<Props> = (props) => {
       <br />
       <form onSubmit={props.onSubmitForm}>
         <div>
-          <input onChange={props.onChangeTitleValue} type="text" value={props.titleValue} />
+          <Input onChange={props.onChangeTitleValue} type="text" value={props.titleValue} />
         </div>
         <br />
         <div>
-          <textarea onChange={props.onChangeBodyValue} value={props.bodyValue} />
+          <Textarea onChange={props.onChangeBodyValue} value={props.bodyValue} />
         </div>
         <div>
-          <input type="submit" value="Update Post" />
+          <BtnInput type="submit" value="Update Post" />
         </div>
       </form>
       <br />
       <div>
-        <button disabled={props.isFetching} onClick={props.handleDeletePost}>
+        <Button disabled={props.isFetching} onClick={props.handleDeletePost}>
           Delete Post
-        </button>
+        </Button>
       </div>
     </>
   )

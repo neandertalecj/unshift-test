@@ -32,10 +32,12 @@ body,
 .aside {
   grid-area: aside;
   background-color: lightgray;
+  padding: 15px;
 }
 .cont {
   grid-area: cont;
   background-color: lightskyblue;
+  padding: 15px;
 }
 .footer {
   grid-area: footer;
@@ -46,6 +48,17 @@ body,
 /* Preloader */
 .preloader {
   text-align: center;
+}
+/*  */
+.textarea {
+  border-radius: 3px;
+  border: 2px solid black;
+  width: 50%;
+  height: 70px;
+}
+.error-message {
+  font-size: 12px;
+  color: red;
 }
 
 /* 404 PAGE */

@@ -3,13 +3,16 @@ import { AppStateType } from './store'
 import { ThunkAction } from 'redux-thunk'
 
 export const SET_POSTS = 'POSTS/SET_POSTS'
-export const SET_SINGLE_POST = 'POSTS/SET_SINGLE_POSTS'
+export const SET_SINGLE_POST = 'POSTS/SET_SINGLE_POST'
 export const SET_POST_COMMENT = 'POSTS/SET_POST_COMMENT'
 export const SET_IS_FETCHING = 'POSTS/SET_IS_FETCHING'
+export const SET_SINGLE_COMMENT = 'POSTS/SET_SINGLE_COMMENT'
+export const SET_COMMENTS = 'POSTS/SET_COMMENTS'
 
 export type PostsStateType = {
   posts: Post[]
   post: Post
+  comment: Comment[]
   isFetching: boolean
 }
 
@@ -34,22 +37,32 @@ const initialState: PostsStateType = {
     body: '',
     comments: [],
   },
+  comment: [],
   isFetching: false,
 }
 
 const usersReducer = (state = initialState, action: ActionsTypes): PostsStateType => {
-  console.log('Reducer ', action)
   switch (action.type) {
     case SET_POSTS:
       return { ...state, posts: action.payload }
     case SET_SINGLE_POST:
       return { ...state, post: action.payload }
+    case SET_COMMENTS:
+      return { ...state, comment: [...action.payload] }
+    case SET_SINGLE_COMMENT:
+      return { ...state, comment: [...state.comment, action.payload] }
+
     default:
       return state
   }
 }
 
-type ActionsTypes = SetPostsActionType | SetSeinglePostActionType | SetIsFetChingActionType
+type ActionsTypes =
+  | SetPostsActionType
+  | SetSeinglePostActionType
+  | SetIsFetChingActionType
+  | SetSingleCommentActionType
+  | SetCommentsActionType
 
 type SetPostsActionType = {
   type: typeof SET_POSTS
@@ -63,10 +76,20 @@ type SetIsFetChingActionType = {
   type: typeof SET_IS_FETCHING
   payload: boolean
 }
+type SetSingleCommentActionType = {
+  type: typeof SET_SINGLE_COMMENT
+  payload: Comment
+}
+type SetCommentsActionType = {
+  type: typeof SET_COMMENTS
+  payload: Comment[]
+}
 
 const setPosts = (posts: Post[]): SetPostsActionType => ({ type: SET_POSTS, payload: posts })
 const setSinglePosts = (post: Post): SetSeinglePostActionType => ({ type: SET_SINGLE_POST, payload: post })
 const setIsFetching = (isFatching: boolean): SetIsFetChingActionType => ({ type: SET_IS_FETCHING, payload: isFatching })
+const setSingleComment = (com: Comment): SetSingleCommentActionType => ({ type: SET_SINGLE_COMMENT, payload: com })
+const setComments = (com: Comment[]): SetCommentsActionType => ({ type: SET_COMMENTS, payload: com })
 
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
@@ -83,6 +106,7 @@ export const getSinglePost = (postId: number): ThunkType => async (dispatch) => 
   try {
     const post = await postsAPI.getPost(postId)
     dispatch(setSinglePosts(post))
+    dispatch(setComments(post.comments))
   } catch (err) {
     console.log('getSinglePost ERROR', err.message)
   }
@@ -119,8 +143,10 @@ export const deletePost = (postId: number, history: any): ThunkType => async (di
 
 export const createComent = (postId: number, body: string): ThunkType => async (dispatch) => {
   try {
-    const post = await postsAPI.createComent(postId, body)
-    getSinglePost(postId)
+    setIsFetching(true)
+    const com = await postsAPI.createComent(postId, body)
+    dispatch(setSingleComment(com))
+    setIsFetching(false)
   } catch (err) {
     console.log('getSinglePost ERROR', err.message)
   }

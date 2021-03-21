@@ -1,5 +1,8 @@
 import React from 'react'
+import { BtnInput, Textarea } from '../common/StyledElements/StyledElements'
+
 type Props = {
+  isFetching: boolean
   onSubmitFormComment: (e: React.FormEvent) => void
   onChangeCommentValue: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   commetValue: string
@@ -15,9 +18,10 @@ const CreateComent: React.FC<Props> = (props) => {
       <hr />
       <h4>Create coments</h4>
       <form onSubmit={props.onSubmitFormComment}>
-        <textarea onChange={props.onChangeCommentValue} value={props.commetValue} />
+        <Textarea onChange={props.onChangeCommentValue} value={props.commetValue} />
         <div>
-          <input type="submit" value="Send Comment" />
+          {/* <input disabled={props.isFetching} type="submit" value="Send Comment" /> */}
+          <BtnInput disabled={props.isFetching} type="submit" value="Send Comment" />
         </div>
       </form>
     </>

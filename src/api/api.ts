@@ -42,4 +42,10 @@ export const postsAPI = {
       .then((data) => data.data)
       .catch((err) => err)
   },
+  // getComent(postId: number) {
+  //   return instance
+  //     .get<Comment>(`/comments/${postId}`)
+  //     .then((data) => data.data)
+  //     .catch((err) => err)
+  // },
 }

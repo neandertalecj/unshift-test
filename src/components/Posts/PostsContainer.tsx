@@ -20,7 +20,6 @@ const PostContainer: React.FC<PropsType> = (props) => {
 
   useEffect(() => {
     props.getPosts()
-    console.log(posts)
   }, [])
 
   if (!posts[0]) {

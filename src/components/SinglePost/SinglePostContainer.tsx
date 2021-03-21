@@ -9,10 +9,12 @@ import Preloader from '../common/Preloader/Preloader'
 import CommentComp from './Comment'
 import CreateComent from './CreateComment'
 import PostEditor from './PostEditor'
+import { Button } from '../common/StyledElements/StyledElements'
 
 type mapStateToPropsType = {
   post: PostType
   isFetching: boolean
+  comment: Comment[]
 }
 
 type mapDispatchToProps = {
@@ -31,6 +33,7 @@ type PropsType = mapStateToPropsType & mapDispatchToProps & RouteComponentProps<
 const SinglePost: React.FC<PropsType> = (props) => {
   const {
     isFetching,
+    comment,
     match,
     post: { id, title, body, comments },
   } = props
@@ -81,6 +84,7 @@ const SinglePost: React.FC<PropsType> = (props) => {
   const onSubmitFormComment = (e: React.FormEvent) => {
     e.preventDefault()
     props.createComent(postId, commetValue)
+    setComentValue('')
   }
 
   const handleDeletePost = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -94,7 +98,7 @@ const SinglePost: React.FC<PropsType> = (props) => {
   return (
     <div>
       <h4>Single post</h4>
-      <button onClick={toggleEditMode}>Edit</button>
+      <Button onClick={toggleEditMode}>Edit</Button>
       {mode && (
         <div>
           <PostEditor
@@ -111,13 +115,14 @@ const SinglePost: React.FC<PropsType> = (props) => {
       {!mode && (
         <div>
           <CreateComent
+            isFetching={isFetching}
             onSubmitFormComment={onSubmitFormComment}
             onChangeCommentValue={onChangeCommentValue}
             commetValue={commetValue}
             title={title}
             body={body}
           />
-          <CommentComp comments={comments} />
+          <CommentComp comments={comment} />
         </div>
       )}
     </div>
@@ -126,6 +131,7 @@ const SinglePost: React.FC<PropsType> = (props) => {
 const mapStateToProps = (state: AppStateType) => ({
   post: state.usersPage.post,
   isFetching: state.usersPage.isFetching,
+  comment: state.usersPage.comment,
 })
 
 export default compose<React.ComponentType>(

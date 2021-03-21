@@ -5,6 +5,7 @@ import { createPost } from '../../redux/postsReducer'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { Input, Button } from '../common/StyledElements/StyledElements'
 
 type mapDispatchToProps = {
   createPost: (title: string, body: string, history: any) => void
@@ -33,19 +34,20 @@ const CreatePost: React.FC<PropsType> = (props) => {
       <Formik initialValues={{ title: '', body: '' }} validationSchema={validationSchemas} onSubmit={submit}>
         {({ isSubmitting }) => (
           <Form>
+            <h2>Create new post</h2>
             <div>
-              <Field type="title" name="title" />
-              <ErrorMessage name="title" component="div" />
+              <Input type="title" name="title" as={Field} />
+              <ErrorMessage className="error-message" name="title" component="div" />
             </div>
             <br />
             <div>
-              <Field as="textarea" type="body" name="body" />
-              <ErrorMessage name="body" component="div" />
+              <Field className="textarea" as="textarea" type="body" name="body" />
+              <ErrorMessage className="error-message" name="body" component="div" />
             </div>
             <br />
-            <button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               Submit
-            </button>
+            </Button>
           </Form>
         )}
       </Formik>
